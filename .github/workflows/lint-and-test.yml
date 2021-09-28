@@ -1,0 +1,52 @@
+name: Lint and test
+
+on: workflow_dispatch
+
+jobs:
+  run-linters-and-tests:
+    name: Run linters and tests
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:12
+        env:
+          POSTGRES_USER: root
+          POSTGRES_PASSWORD: password123
+          POSTGRES_DB: testdb
+        ports: [ '5432:5432' ]
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+      redis:
+        image: redis:6-alpine
+        ports: [ '6379:6379' ]
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v2
+#      - name: Unlock secrets
+#        uses: sliteteam/github-action-git-crypt-unlock@1.2.0
+#        env:
+#          GIT_CRYPT_KEY: ${{ secrets.GIT_CRYPT_KEY }}
+      - name: Set up Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.8
+      - name: Cache pip
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt', 'requirements-devel.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+            ${{ runner.os }}-
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt-get install ffmpeg
+          pip install -qq -r requirements.txt -r requirements-devel.txt
+      - name: Run linters
+        run: |
+          black . --check
+          flake8 .
+      - name: Run Tests
+        env:
+          DOCKERIZED: 1
+        run: python manage.py test
