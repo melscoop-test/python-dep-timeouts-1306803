@@ -40,6 +40,7 @@ jobs:
  
       - name: Install dependencies
         run: |
+          sudo apt update -y
           sudo apt install ffmpeg -y
           pip install -qq -r requirements.txt -r requirements-devel.txt
       - name: Run linters
