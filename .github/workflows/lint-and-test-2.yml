@@ -38,11 +38,15 @@ jobs:
             ${{ runner.os }}-pip-
             ${{ runner.os }}-
  
-      - name: Install dependencies
+      - name: Update Ubuntu
         run: |
           sudo apt update -y
-          # pip install -qq -r requirements.txt -r requirements-devel.txt
+          
+      - name: Install dependencies
+        run: |
+            pip install -qq -r requirements.txt -r requirements-devel.txt
             sudo apt install ffmpeg -y
+            
       - name: Run linters
         run: |
           black . --check
