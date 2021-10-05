@@ -40,12 +40,14 @@ jobs:
        
       - name: Update Ubuntu
         run: |
-          sudo apt --log-level=debug update -y
+          sudo apt --log-level=debug 
+          sudo apt update -y
           
       - name: Install dependencies
         run: |
             pip install -qq -r requirements.txt -r requirements-devel.txt
-#            sudo apt --log-level=debug install ffmpeg -y
+            sudo apt --log-level=debug
+            sudo apt install ffmpeg -y
             
       - name: Run linters
         run: |
