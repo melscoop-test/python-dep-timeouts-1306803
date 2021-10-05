@@ -37,19 +37,15 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pip-
             ${{ runner.os }}-
-      - name: Adjust timeout for debugging
-        run: | 
-          sudo chmod +rw /etc/apt/apt.conf
-          sudo echo >> "Acquire::http::Timeout "3";" /etc/apt/apt.conf
-          
+       
       - name: Update Ubuntu
         run: |
-          sudo apt update -y
+          sudo apt --log-level=debug update -y
           
       - name: Install dependencies
         run: |
             pip install -qq -r requirements.txt -r requirements-devel.txt
-#            sudo apt install ffmpeg -y
+#            sudo apt --log-level=debug install ffmpeg -y
             
       - name: Run linters
         run: |
