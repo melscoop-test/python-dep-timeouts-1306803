@@ -37,7 +37,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pip-
             ${{ runner.os }}-
- 
+      - name: Adjust timeout for debugging
+        run: | 
+          echo "Acquire::http::Pipeline-Depth "0";" >> /etc/apt/apt.conf.d/piplining-off.conf
+          echo >> "Acquire::http::Timeout "3";" /etc/apt/apt.conf
+          
       - name: Update Ubuntu
         run: |
           sudo apt update -y
