@@ -44,7 +44,7 @@ jobs:
           
       - name: Install dependencies
         run: |
-            pip install -qq -r requirements.txt -r requirements-devel.txt
+            pip install --default-timeout=1000 -qq -r requirements.txt -r requirements-devel.txt
             sudo apt install ffmpeg -y
             
       - name: Run linters
