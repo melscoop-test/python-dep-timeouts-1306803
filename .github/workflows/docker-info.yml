@@ -1,0 +1,11 @@
+name: Lint and test pt 2
+
+on: workflow_dispatch
+
+jobs:
+  docker-info:
+    name: Show docker info
+    runs-on: windows-latest
+    steps:          
+      - name: show docker version info
+        run: docker version
