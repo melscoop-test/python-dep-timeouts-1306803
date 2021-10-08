@@ -1,4 +1,4 @@
-name: Lint and test pt 2
+name: Windows latest docker info
 
 on: workflow_dispatch
 
